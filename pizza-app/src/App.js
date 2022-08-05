@@ -1,59 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Pizza.css';
 
-class Pizza extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pizzaText: this.props.name
-    }
-  }
-
-  get getTops() {
-    return this.toppings;
-  }
-
-  get getNumTops() {
-    return this.toppings.size;
-  }
-
-  // Returns 'true' if topping was successfully added to set
-  // 'add()' normally returns Set object itself
-  addTopping(topping) {
-    let i = this.toppings.size;
-    this.toppings.add(topping);
-    return this.toppings.size === i + 1;
-  }
-
-  // Returns 'true' if topping was successfully removed from set
-  removeTopping(topping) {
-    let i = this.toppings.size;
-    this.toppings.delete(topping);
-    return this.toppings.size === i - 1;
-  }
-
-  clearToppings() {
-    this.toppings.clear();
-  }
-
-  equals(other) {
-    return this.toppings.size === other.getNumTops() &&
-      this.toppings.every((x) => other.getTops().has(x));
-  }
-
-  render() {
-    return (
-      <div>
-        Pizza app coming soon
-      </div>
-    );
-  }
-}
-
 class Title extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div className='Title'>
@@ -64,10 +12,6 @@ class Title extends React.Component {
 }
 
 class PizzaButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className='Center'>
@@ -159,12 +103,12 @@ class PizzaApp extends React.Component {
   }
 
   newPizzaAdded(newPizza) {
-    this.state.toppings = null; // Edge case
     let pizzaSet = this.state.pizzas ?? new Set();
     let preSize = pizzaSet.size;
     pizzaSet.add(newPizza);
-    let doop = preSize == pizzaSet.size; // If pizza was not added to set, set size won't change
+    let doop = preSize === pizzaSet.size; // If pizza was not added to set, set size won't change
     this.setState({
+      toppings: null, // Corner case
       creatingPizza: false,
       duplicatePizza: doop,
       pizzas: pizzaSet,
@@ -173,23 +117,25 @@ class PizzaApp extends React.Component {
 
   deletePizza(pizza) {
     this.state.pizzas.delete(pizza);
-    this.state.toppings = null;
-    this.forceUpdate();
+    this.setState({
+      toppings: null
+    });
   }
 
   editPizza(pizza) {
     this.state.pizzas.delete(pizza);
-    this.state.toppings = JSON.parse(pizza);
-    this.state.creatingPizza = true;
-    this.forceUpdate();
+    this.setState({
+      toppings: JSON.parse(pizza),
+      creatingPizza: true
+    })
   }
 
   renderPromptSection() {
     if (this.state.creatingPizza) {
       return (
         <BuildPizza
-        toppings={this.state.toppings}
-        onComplete={(newPizza) => this.newPizza = this.newPizzaAdded(newPizza)} />
+          toppings={this.state.toppings}
+          onComplete={(newPizza) => this.newPizza = this.newPizzaAdded(newPizza)} />
       )
     }
     else return (
@@ -199,7 +145,6 @@ class PizzaApp extends React.Component {
 
   renderDuplicationError() {
     if (!this.state.duplicatePizza) return null;
-
     return (<div className='Center'>
       YOU CANNOT ENTER A DUPLICATE PIZZA
     </div>)
@@ -229,13 +174,17 @@ class PizzaApp extends React.Component {
     let pizzaList = [];
 
     this.state.pizzas.forEach((pizza) => pizzaList.push(
-      <div className='Center'>
-        {this.parsePizza(pizza)}
-        <button className='Button'
-          onClick={() => this.editPizza(pizza)}>EDIT</button>
-        <button
-          className='Button'
-          onClick={() => this.deletePizza(pizza)}>DELETE</button>
+      <div className='SplitScreen'>
+        <div className='LeftPane'>
+          <div className="Text">{this.parsePizza(pizza)}</div>
+        </div>
+        <div className='RightPane'>
+          <button className='Button'
+            onClick={() => this.editPizza(pizza)}>EDIT</button>
+          <button
+            className='Button'
+            onClick={() => this.deletePizza(pizza)}>DELETE</button>
+        </div>
       </div>
     ))
 
