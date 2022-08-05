@@ -1,0 +1,43 @@
+.Center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+}
+
+.LeftColumn {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    width: 50vw;
+}
+
+.RightColumn {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    width: 50vw;
+}
+
+.Button {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 0;
+    text-align: center;
+    width: 128px;
+}
+
+.Title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    width: 100vw;
+}
