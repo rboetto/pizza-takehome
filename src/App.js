@@ -30,7 +30,7 @@ class BuildPizza extends React.Component {
     super(props);
     this.state = props.toppings ?? {
       Mushrooms: false,
-      Pepperony: false,
+      Pepperoni: false,
       Onions: false,
       Artichoke: false,
       Olives: false
@@ -53,9 +53,9 @@ class BuildPizza extends React.Component {
           </button>
           <button
             className='Button'
-            style={{ background: this.state.Pepperony ? '#999' : '#fff' }}
-            onClick={() => this.setState({ Pepperony: !this.state.Pepperony })}>
-            PEPPERONY
+            style={{ background: this.state.Pepperoni ? '#999' : '#fff' }}
+            onClick={() => this.setState({ Pepperoni: !this.state.Pepperoni })}>
+            PEPPERONI
           </button>
           <button
             className='Button'
